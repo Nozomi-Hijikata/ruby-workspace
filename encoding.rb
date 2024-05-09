@@ -5,7 +5,8 @@ has_tables = {
   'ゔ' => 'う”'
 }
 
-text.encode!(Encoding::SJIS, fallback: has_tables, invalid: :replace)
+kana_converter = ->(text) { has_tables.fetch(text, '?') }
+text.encode!(Encoding::SJIS, fallback: kana_converter, invalid: :replace)
 
 CSV.open('output.csv', 'wb', encoding: Encoding::SJIS) do |csv|
   csv << [text]
